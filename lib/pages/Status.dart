@@ -1,0 +1,255 @@
+import 'package:chat_app/pages/StoryView.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:story_view/story_view.dart';
+
+import 'StatusText.dart';
+
+
+
+class Status extends StatefulWidget {
+  const Status({Key? key}) : super(key: key);
+
+  @override
+  State<Status> createState() => _StatusState();
+}
+
+
+class _StatusState extends State<Status> {
+  final StoryController controller = StoryController();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        margin: EdgeInsets.all(
+          8,
+        ),
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => StoryVieww()));
+              },
+              leading: Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundImage: NetworkImage("https://image.ibb.co/cU4WGx/Omotuo-Groundnut-Soup-braperucci-com-1.jpg"),
+                  ),
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white
+                      ),
+                      child: Container(
+                          margin: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(0xff25D366)
+                          ),
+                          child: Icon(Icons.add,size: 18,color: Colors.white,)),
+                    ),
+                  ),
+                ],
+              ),
+              title: Text("My Status",style: TextStyle(fontWeight: FontWeight.bold),),
+              subtitle: Text("Tap to add status update",style: TextStyle(color: Colors.black54),),
+            ),
+            // Container(
+            //   height: 300,
+            //   child: StoryView(
+            //     controller: controller,
+            //     storyItems: [
+            //       StoryItem.text(
+            //         title:
+            //         "Hello world!\nHave a look at some great Ghanaian delicacies. I'm sorry if your mouth waters. \n\nTap!",
+            //         backgroundColor: Colors.orange,
+            //         roundedTop: true,
+            //       ),
+            //       StoryItem.inlineImage(
+            //         url:
+            //         "https://image.ibb.co/cU4WGx/Omotuo-Groundnut-Soup-braperucci-com-1.jpg",
+            //         controller: controller,
+            //         caption: Text(
+            //           "Omotuo & Nkatekwan; You will love this meal if taken as supper.",
+            //           style: TextStyle(
+            //             color: Colors.white,
+            //             backgroundColor: Colors.black54,
+            //             fontSize: 17,
+            //           ),
+            //         ),
+            //       ),
+            //       StoryItem.inlineImage(
+            //         url:
+            //         "https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif",
+            //         controller: controller,
+            //         caption: Text(
+            //           "Hektas, sektas and skatad",
+            //           style: TextStyle(
+            //             color: Colors.white,
+            //             backgroundColor: Colors.black54,
+            //             fontSize: 17,
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //     onStoryShow: (s) {
+            //       print("Showing a story");
+            //     },
+            //     onComplete: () {
+            //       print("Completed a cycle");
+            //     },
+            //     progressPosition: ProgressPosition.bottom,
+            //     repeat: false,
+            //     inline: true,
+            //   ),
+            // ),
+            // Material(
+            //   child: InkWell(
+            //     onTap: () {
+            //       Navigator.of(context).push(
+            //           MaterialPageRoute(builder: (context) => MoreStories()));
+            //     },
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //           color: Colors.black54,
+            //           borderRadius:
+            //           BorderRadius.vertical(bottom: Radius.circular(8))),
+            //       padding: EdgeInsets.symmetric(vertical: 8),
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: <Widget>[
+            //           Icon(
+            //             Icons.arrow_forward,
+            //             color: Colors.white,
+            //           ),
+            //           SizedBox(
+            //             width: 16,
+            //           ),
+            //           Text(
+            //             "View more stories",
+            //             style: TextStyle(fontSize: 16, color: Colors.white),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
+      ),
+      floatingActionButton: AnimatedOpacity(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                height: 45,
+                width: 45,
+                child: FittedBox(
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.grey.shade300,
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => StatusText()));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle
+                      ),
+                      child: Icon(Icons.edit),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 15,),
+              FloatingActionButton(
+                backgroundColor: Color(0xff25D366),
+                onPressed: (){
+
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+
+                  ),
+                  child: Icon(Icons.camera_alt,color: Colors.white,),
+                ),
+              )
+            ],
+          ),
+        duration: const Duration(milliseconds: 100),
+        opacity: 1 ,
+      ),
+    );
+  }
+}
+
+class MoreStories extends StatefulWidget {
+  @override
+  _MoreStoriesState createState() => _MoreStoriesState();
+}
+
+class _MoreStoriesState extends State<MoreStories> {
+  final storyController = StoryController();
+
+  @override
+  void dispose() {
+    storyController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("More"),
+      ),
+      body: StoryView(
+        storyItems: [
+          StoryItem.text(
+            title: "I guess you'd love to see more of our food. That's great.",
+            backgroundColor: Colors.blue,
+          ),
+          StoryItem.text(
+            title: "Nice!\n\nTap to continue.",
+            backgroundColor: Colors.red,
+            textStyle: TextStyle(
+              fontFamily: 'Dancing',
+              fontSize: 40,
+            ),
+          ),
+          StoryItem.pageImage(
+            url: "https://image.ibb.co/cU4WGx/Omotuo-Groundnut-Soup-braperucci-com-1.jpg",
+            caption: "Still sampling",
+            controller: storyController,
+          ),
+          StoryItem.pageImage(
+              url: "https://media.giphy.com/media/5GoVLqeAOo6PK/giphy.gif",
+              caption: "Working with gifs",
+              controller: storyController),
+          StoryItem.pageImage(
+            url: "https://media.giphy.com/media/XcA8krYsrEAYXKf4UQ/giphy.gif",
+            caption: "Hello, from the other side",
+            controller: storyController,
+          ),
+          StoryItem.pageImage(
+            url: "https://media.giphy.com/media/XcA8krYsrEAYXKf4UQ/giphy.gif",
+            caption: "Hello, from the other side2",
+            controller: storyController,
+          ),
+        ],
+        onStoryShow: (s) {
+          print("Showing a story");
+        },
+        onComplete: () {
+          print("Completed a cycle");
+        },
+        progressPosition: ProgressPosition.top,
+        repeat: false,
+        controller: storyController,
+      ),
+    );
+  }
+}
